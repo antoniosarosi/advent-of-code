@@ -30,24 +30,27 @@ class PlayerShape(Enum):
     def points(self) -> int:
         return Shape[self.name].value
 
-    def result_against(self, oponent_shape: OponentShape) -> RoundResult:
-        match (self, oponent_shape):
+    def result_against(self, oponent: OponentShape) -> RoundResult:
+        match (self, oponent):
             case (
-                (self.ROCK, OponentShape.SCISSORS)
-                | (self.PAPER, OponentShape.ROCK)
-                | (self.SCISSORS, OponentShape.PAPER)
+                (self.ROCK, oponent.SCISSORS)
+                | (self.PAPER, oponent.ROCK)
+                | (self.SCISSORS, oponent.PAPER)
             ):
                 return RoundResult.WIN
 
             case (
-                (self.SCISSORS, OponentShape.ROCK)
-                | (self.PAPER, OponentShape.SCISSORS)
-                | (self.ROCK, OponentShape.PAPER)
+                (self.SCISSORS, oponent.ROCK)
+                | (self.PAPER, oponent.SCISSORS)
+                | (self.ROCK, oponent.PAPER)
             ):
                 return RoundResult.LOSS
 
             case _:
                 return RoundResult.DRAW
+
+    def round_points(self, oponent: OponentShape) -> int:
+        return self.points + self.result_against(oponent).value
 
 
 # Part 2: X, Y and Z are the results that we should enforce each round.
@@ -60,24 +63,27 @@ class PlayerResult(Enum):
     def points(self) -> int:
         return RoundResult[self.name].value
 
-    def necessary_shape_against(self, oponent_shape: OponentShape) -> Shape:
-        match (self, oponent_shape):
+    def necessary_shape_against(self, oponent: OponentShape) -> Shape:
+        match (self, oponent):
             case (
-                (self.LOSS, oponent_shape.PAPER)
-                | (self.DRAW, oponent_shape.ROCK)
-                | (self.WIN, oponent_shape.SCISSORS)
+                (self.LOSS, oponent.PAPER)
+                | (self.DRAW, oponent.ROCK)
+                | (self.WIN, oponent.SCISSORS)
             ):
                 return Shape.ROCK
 
             case (
-                (self.LOSS, oponent_shape.SCISSORS)
-                | (self.DRAW, oponent_shape.PAPER)
-                | (self.WIN, oponent_shape.ROCK)
+                (self.LOSS, oponent.SCISSORS)
+                | (self.DRAW, oponent.PAPER)
+                | (self.WIN, oponent.ROCK)
             ):
                 return Shape.PAPER
 
             case _:
                 return Shape.SCISSORS
+
+    def round_points(self, oponent: OponentShape) -> int:
+        return self.points + self.necessary_shape_against(oponent).value
 
 
 P = TypeVar("P", PlayerShape, PlayerResult)
@@ -105,24 +111,12 @@ def parse_game(
     return game
 
 
-def part1(game: Game[PlayerShape]) -> int:
-    score = 0
-    for oponent, player in game:
-        score += player.points + player.result_against(oponent).value
-
-    return score
-
-
-def part2(game: Game[PlayerResult]) -> int:
-    score = 0
-    for oponent, result in game:
-        score += result.points + result.necessary_shape_against(oponent).value
-
-    return score
+def play_game(game: Game[PlayerResult] | Game[PlayerShape]) -> int:
+    return sum(player.round_points(oponent) for oponent, player in game)
 
 
 def solution(input: str) -> tuple[int, int]:
-    return (
-        part1(parse_game(input, PlayerShape)),
-        part2(parse_game(input, PlayerResult)),
-    )
+    part1 = parse_game(input, PlayerShape)
+    part2 = parse_game(input, PlayerResult)
+
+    return play_game(part1), play_game(part2)

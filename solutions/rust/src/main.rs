@@ -1,5 +1,3 @@
-use std::{env, fs, path::PathBuf};
-
 use clap::Parser;
 
 #[derive(Parser, Debug)]
@@ -13,7 +11,7 @@ struct Cli {
     day: u8,
 
     /// Alternate input file
-    input: Option<PathBuf>,
+    input: Option<std::path::PathBuf>,
 }
 
 fn main() -> std::io::Result<()> {
@@ -27,14 +25,14 @@ fn main() -> std::io::Result<()> {
     ));
 
     let input = input.unwrap_or(
-        env::current_exe()?
+        std::env::current_exe()?
             .ancestors()
             .nth(5)
             .expect("Failed obtaining input file path. Use `cargo run`.")
             .join(format!("inputs/{year}/day{day:02}.txt")),
     );
 
-    let (part1, part2) = solution(&fs::read_to_string(input)?);
+    let (part1, part2) = solution(&std::fs::read_to_string(input)?);
 
     println!("{part1}\n{part2}");
 
