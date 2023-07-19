@@ -1,15 +1,15 @@
 #[derive(Clone, Copy)]
 enum RoundResult {
-    LOSS = 0,
-    DRAW = 3,
-    WIN = 6,
+    Loss = 0,
+    Draw = 3,
+    Win = 6,
 }
 
 #[derive(Clone, Copy)]
 enum Shape {
-    ROCK = 1,
-    PAPER = 2,
-    SCISSORS = 3,
+    Rock = 1,
+    Paper = 2,
+    Scissors = 3,
 }
 
 trait FromPlayerEncoding {
@@ -23,22 +23,22 @@ trait ComputeRoundPoints {
 impl Shape {
     fn from_oponent_encodig(encoded: &str) -> Self {
         match encoded {
-            "A" => Self::ROCK,
-            "B" => Self::PAPER,
-            "C" => Self::SCISSORS,
+            "A" => Self::Rock,
+            "B" => Self::Paper,
+            "C" => Self::Scissors,
             _ => panic!("Unexpected oponent shape: '{encoded}'"),
         }
     }
 
     fn result_against(&self, oponent: &Self) -> RoundResult {
-        use Shape::*;
+        use {RoundResult::*, Shape::*};
 
         match (self, oponent) {
-            (ROCK, SCISSORS) | (PAPER, ROCK) | (SCISSORS, PAPER) => RoundResult::WIN,
+            (Rock, Scissors) | (Paper, Rock) | (Scissors, Paper) => Win,
 
-            (SCISSORS, ROCK) | (PAPER, SCISSORS) | (ROCK, PAPER) => RoundResult::LOSS,
+            (Scissors, Rock) | (Paper, Scissors) | (Rock, Paper) => Loss,
 
-            _ => RoundResult::DRAW,
+            _ => Draw,
         }
     }
 }
@@ -48,11 +48,11 @@ impl RoundResult {
         use {RoundResult::*, Shape::*};
 
         match (self, oponent) {
-            (LOSS, PAPER) | (DRAW, ROCK) | (WIN, SCISSORS) => Shape::ROCK,
+            (Loss, Paper) | (Draw, Rock) | (Win, Scissors) => Rock,
 
-            (LOSS, SCISSORS) | (DRAW, PAPER) | (WIN, ROCK) => Shape::PAPER,
+            (Loss, Scissors) | (Draw, Paper) | (Win, Rock) => Paper,
 
-            _ => Shape::SCISSORS,
+            _ => Scissors,
         }
     }
 }
@@ -61,9 +61,9 @@ impl RoundResult {
 impl FromPlayerEncoding for Shape {
     fn from_player_encoding(encoded: &str) -> Self {
         match encoded {
-            "X" => Self::ROCK,
-            "Y" => Self::PAPER,
-            "Z" => Self::SCISSORS,
+            "X" => Self::Rock,
+            "Y" => Self::Paper,
+            "Z" => Self::Scissors,
             _ => panic!("Unexpected player shape: '{encoded}'"),
         }
     }
@@ -79,9 +79,9 @@ impl ComputeRoundPoints for Shape {
 impl FromPlayerEncoding for RoundResult {
     fn from_player_encoding(encoded: &str) -> Self {
         match encoded {
-            "X" => Self::LOSS,
-            "Y" => Self::DRAW,
-            "Z" => Self::WIN,
+            "X" => Self::Loss,
+            "Y" => Self::Draw,
+            "Z" => Self::Win,
             _ => panic!("Unexpected player result: '{encoded}'"),
         }
     }

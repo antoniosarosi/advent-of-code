@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <stdio.h>
 
 void year2022_day01_solution(char *input, int output[2]) {
     int top_three[] = {0, 0, 0};
