@@ -28,7 +28,7 @@ fn main() -> std::io::Result<()> {
         std::env::current_exe()?
             .ancestors()
             .nth(5)
-            .expect("Failed obtaining input file path. Use `cargo run`.")
+            .expect("input file path is wrong. Use `cargo run`.")
             .join(format!("inputs/{year}/day{day:02}.txt")),
     );
 

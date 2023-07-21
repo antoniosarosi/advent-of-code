@@ -1,3 +1,5 @@
+#![feature(iter_array_chunks)]
+
 mod year2022;
 
 use std::collections::HashMap;
@@ -8,5 +10,6 @@ pub fn collect_solutions<'a>() -> HashMap<&'a str, Solution> {
     HashMap::from([
         ("2022/01", year2022::day01::solution as Solution),
         ("2022/02", year2022::day02::solution),
+        ("2022/03", year2022::day03::solution),
     ])
 }
