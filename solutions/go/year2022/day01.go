@@ -24,7 +24,7 @@ func parseTotalCalories(input string) []int {
 	return totalCalories
 }
 
-func part1(calories []int) int {
+func day1Part1(calories []int) int {
 	max := 0
 	for _, cal := range calories {
 		if cal > max {
@@ -35,7 +35,7 @@ func part1(calories []int) int {
 	return max
 }
 
-func part2(calories []int) int {
+func day1Part2(calories []int) int {
 	topThree := []int{0, 0, 0}
 	for _, cal := range calories {
 		for i := 0; i < len(topThree); i++ {
@@ -55,5 +55,5 @@ func part2(calories []int) int {
 func Day1(input string) (int, int) {
 	calories := parseTotalCalories(input)
 
-	return part1(calories), part2(calories)
+	return day1Part1(calories), day1Part2(calories)
 }
