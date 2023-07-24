@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"strconv"
+
+	"github.com/antoniosarosi/advent-of-code/solutions/go/pkg/solutions"
 )
 
 func fail(format string, args ...any) {
@@ -31,7 +33,7 @@ func main() {
 		inputFile = os.Args[3]
 	}
 
-	solution := GetSolution(fmt.Sprintf("%d/%02d", year, day))
+	solution := solutions.GetSolution(fmt.Sprintf("%d/%02d", year, day))
 	if solution == nil {
 		fail("Solution for year %d day %d is no implemented or registered", year, day)
 	}

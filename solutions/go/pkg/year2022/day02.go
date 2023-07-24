@@ -93,7 +93,7 @@ func getNecessaryShapeForResult(result, oponent int) int {
 	return Scissors
 }
 
-func parse(input string, parsePlayer func(string) int) []Round {
+func parseGame(input string, parsePlayer func(string) int) []Round {
 	var game []Round
 
 	for _, line := range strings.Split(strings.TrimSpace(input), "\n") {
@@ -129,8 +129,8 @@ func day2Part2(game []Round) int {
 }
 
 func Day2(input string) (int, int) {
-	part1 := parse(input, parsePlayerShape)
-	part2 := parse(input, parsePlayerResult)
+	part1 := parseGame(input, parsePlayerShape)
+	part2 := parseGame(input, parsePlayerResult)
 
 	return day2Part1(part1), day2Part2(part2)
 }

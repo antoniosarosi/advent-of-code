@@ -1,6 +1,6 @@
-package main
+package solutions
 
-import "aoc/year2022"
+import "github.com/antoniosarosi/advent-of-code/solutions/go/pkg/year2022"
 
 type Solution = func(string) (int, int)
 
