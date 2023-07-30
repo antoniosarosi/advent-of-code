@@ -110,9 +110,9 @@ fn play_game(game: &Vec<(Shape, impl ComputeRoundPoints)>) -> i32 {
         .sum()
 }
 
-pub(crate) fn solution(input: &str) -> (i32, i32) {
+pub(crate) fn solution(input: &str) -> (String, String) {
     let part1: Vec<(Shape, Shape)> = parse(input);
     let part2: Vec<(Shape, RoundResult)> = parse(input);
 
-    (play_game(&part1), play_game(&part2))
+    (play_game(&part1).to_string(), play_game(&part2).to_string())
 }

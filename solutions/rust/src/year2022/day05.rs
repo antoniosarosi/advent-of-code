@@ -86,12 +86,11 @@ fn part2(stacks: &mut Vec<Vec<char>>, instructions: &Vec<Move>) -> Vec<char> {
     top_crates(stacks)
 }
 
-pub(crate) fn solution(input: &str) -> (i32, i32) {
+pub(crate) fn solution(input: &str) -> (String, String) {
     let (mut stacks, instructions) = parse(input);
 
     let part1 = String::from_iter(part1(&mut stacks.clone(), &instructions));
     let part2 = String::from_iter(part2(&mut stacks, &instructions));
 
-    println!("{part1}\n{part2}");
-    (0, 0)
+    (part1, part2)
 }

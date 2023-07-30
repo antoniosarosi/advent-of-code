@@ -39,8 +39,8 @@ fn part2(calories: &Vec<i32>) -> i32 {
     top_three.iter().sum()
 }
 
-pub(crate) fn solution(input: &str) -> (i32, i32) {
+pub(crate) fn solution(input: &str) -> (String, String) {
     let calories = parse_total_calories(input);
 
-    (part1(&calories), part2(&calories))
+    (part1(&calories).to_string(), part2(&calories).to_string())
 }

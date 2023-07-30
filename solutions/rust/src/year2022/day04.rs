@@ -58,7 +58,10 @@ fn part2(assignments: &Vec<Pair>) -> usize {
     })
 }
 
-pub(crate) fn solution(input: &str) -> (i32, i32) {
+pub(crate) fn solution(input: &str) -> (String, String) {
     let assignments = parse(input);
-    (part1(&assignments) as i32, part2(&assignments) as i32)
+    (
+        part1(&assignments).to_string(),
+        part2(&assignments).to_string(),
+    )
 }

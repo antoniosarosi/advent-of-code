@@ -30,3 +30,6 @@ You can also provide alternate input files using an optional third argument:
 ```bash
 python solutions/python 2022 1 ./path/to/alternate/input.txt
 ```
+
+> [!NOTE]
+> Note that input files must use `LF` only line endings (`\n`)

@@ -31,7 +31,7 @@ fn ruckcask_into_hash_set(ruckcask: &Rucksack) -> HashSet<Item> {
     HashSet::from_iter(ruckcask.0.iter().chain(ruckcask.1.iter()).copied())
 }
 
-fn part1(rucksacks: &Vec<Rucksack>) -> i32 {
+fn part1(rucksacks: &Vec<Rucksack>) -> usize {
     let priorities = rucksacks.iter().map(|rucksack| {
         let first_compartment = HashSet::<Item>::from_iter(rucksack.0.iter().copied());
 
@@ -44,10 +44,10 @@ fn part1(rucksacks: &Vec<Rucksack>) -> i32 {
         priority(*duplicate)
     });
 
-    priorities.sum::<usize>() as i32
+    priorities.sum()
 }
 
-fn part2(groups: &Vec<Group>) -> i32 {
+fn part2(groups: &Vec<Group>) -> usize {
     let priorities = groups.iter().map(|group| {
         let mut candidates = ruckcask_into_hash_set(&group[0]);
 
@@ -59,14 +59,14 @@ fn part2(groups: &Vec<Group>) -> i32 {
         priority(*candidates.iter().next().expect("no repeated item found"))
     });
 
-    priorities.sum::<usize>() as i32
+    priorities.sum()
 }
 
-pub(crate) fn solution(input: &str) -> (i32, i32) {
+pub(crate) fn solution(input: &str) -> (String, String) {
     let rucksacks = parse(input);
 
     return (
-        part1(&rucksacks.clone().into_iter().flatten().collect()),
-        part2(&rucksacks),
+        part1(&rucksacks.clone().into_iter().flatten().collect()).to_string(),
+        part2(&rucksacks).to_string(),
     );
 }

@@ -5,7 +5,7 @@ mod year2022;
 
 use std::collections::HashMap;
 
-type Solution = fn(&str) -> (i32, i32);
+type Solution = fn(&str) -> (String, String);
 
 pub fn collect_solutions<'a>() -> HashMap<&'a str, Solution> {
     HashMap::from([
