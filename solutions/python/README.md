@@ -1,7 +1,8 @@
 # Python
 
-Run the entry point in [`__main__.py`](./__main__.py):
+Run the [`aoc`](./aoc/) module from this directory:
 
 ```bash
-python solutions/python 2022 1 ./optional/path/to/alternate/input.txt
+cd ./solutions/python/
+python -m aoc 2022 1 ./optional/path/to/alternate/input.txt
 ```
