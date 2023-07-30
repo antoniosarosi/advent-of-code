@@ -13,5 +13,6 @@ pub fn collect_solutions<'a>() -> HashMap<&'a str, Solution> {
         ("2022/02", year2022::day02::solution),
         ("2022/03", year2022::day03::solution),
         ("2022/04", year2022::day04::solution),
+        ("2022/05", year2022::day05::solution),
     ])
 }
