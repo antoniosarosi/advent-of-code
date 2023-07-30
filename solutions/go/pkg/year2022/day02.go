@@ -2,6 +2,7 @@ package year2022
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -128,9 +129,9 @@ func day2Part2(game []Round) int {
 	})
 }
 
-func Day2(input string) (int, int) {
+func Day2(input string) (string, string) {
 	part1 := parseGame(input, parsePlayerShape)
 	part2 := parseGame(input, parsePlayerResult)
 
-	return day2Part1(part1), day2Part2(part2)
+	return strconv.Itoa(day2Part1(part1)), strconv.Itoa(day2Part2(part2))
 }

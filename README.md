@@ -32,4 +32,4 @@ python solutions/python 2022 1 ./path/to/alternate/input.txt
 ```
 
 > [!NOTE]
-> Note that input files must use `LF` only line endings (`\n`)
+> Input files must use `LF` only line endings (`\n`), **not** `CRLF` (`\r\n`)

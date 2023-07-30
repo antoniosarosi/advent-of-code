@@ -52,8 +52,8 @@ func day1Part2(calories []int) int {
 	return topThree[0] + topThree[1] + topThree[2]
 }
 
-func Day1(input string) (int, int) {
+func Day1(input string) (string, string) {
 	calories := parseTotalCalories(input)
 
-	return day1Part1(calories), day1Part2(calories)
+	return strconv.Itoa(day1Part1(calories)), strconv.Itoa(day1Part2(calories))
 }

@@ -1,7 +1,7 @@
 #include "./year2022/day01.c"
 #include "./year2022/day02.c"
 
-typedef void (*Fn)(char*, int[2]);
+typedef void (*Fn)(char*, char*[265]);
 
 struct Solution {
     int year;

@@ -2,7 +2,7 @@ package solutions
 
 import "github.com/antoniosarosi/advent-of-code/solutions/go/pkg/year2022"
 
-type Solution = func(string) (int, int)
+type Solution = func(string) (string, string)
 
 func GetSolution(key string) Solution {
 	solutions := map[string]Solution{

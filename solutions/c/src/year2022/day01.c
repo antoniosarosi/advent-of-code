@@ -1,6 +1,7 @@
 #include <stdlib.h>
+#include <stdio.h>
 
-void year2022_day01_solution(char *input, int output[2]) {
+void year2022_day01_solution(char *input, char **output) {
     int top_three[] = {0, 0, 0};
 
     while (input[0] != '\0') {
@@ -27,6 +28,6 @@ void year2022_day01_solution(char *input, int output[2]) {
         }
     }
 
-    output[0] = top_three[0];
-    output[1] = top_three[0] + top_three[1] + top_three[2];
+    sprintf(output[0], "%d", top_three[0]);
+    sprintf(output[1], "%d", top_three[0] + top_three[1] + top_three[2]);
 }

@@ -9,6 +9,7 @@
 #endif
 
 #define INPUT_FILE_PATH_MAX_SIZE 256
+#define MAX_OUTPUT_SIZE 256
 
 void fail(const char *format, ...) {
     va_list args;
@@ -65,10 +66,11 @@ int main(int argc, char **argv) {
     }
 
     char *input = read_input(path);
-    int output[2] = {0, 0};
-    solution(input, output);
+    char output[2][MAX_OUTPUT_SIZE] = {"Not Implemented", "Not Implemented"};
 
-    printf("%d\n%d\n", output[0], output[1]);
+    solution(input, (char*[]){output[0], output[1]});
+
+    printf("%s\n%s\n", output[0], output[1]);
 
     free(input);
 
