@@ -1,3 +1,5 @@
+use rust::ProblemSolver;
+
 fn main() -> Result<(), String> {
     let args: Vec<String> = std::env::args().collect();
 
@@ -43,9 +45,11 @@ fn main() -> Result<(), String> {
     let input = std::fs::read_to_string(&input_file)
         .map_err(|err| format!("Cannot read input file '{}': {err}", input_file.display()))?;
 
-    let (part1, part2) = solution(&input);
+    let ProblemSolver(part1, part2) = solution();
+    let part1 = part1.solve(&input);
+    let part2 = part2.solve(&input);
 
-    println!("{part1}\n{part2}");
+    println!("Part1:\n{part1}\n\nPart2:\n{part2}");
 
     Ok(())
 }

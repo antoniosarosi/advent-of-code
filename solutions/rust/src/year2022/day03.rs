@@ -1,5 +1,7 @@
 use std::collections::HashSet;
 
+use crate::{PartSolver, ProblemSolver};
+
 const GROUP_SIZE: usize = 3;
 
 type Item = char;
@@ -62,11 +64,12 @@ fn part2(groups: &Vec<Group>) -> i32 {
     priorities.sum::<usize>() as i32
 }
 
-pub(crate) fn solution(input: &str) -> (i32, i32) {
-    let rucksacks = parse(input);
-
-    return (
-        part1(&rucksacks.clone().into_iter().flatten().collect()),
-        part2(&rucksacks),
-    );
+pub(crate) fn solution() -> ProblemSolver {
+    ProblemSolver::new(
+        PartSolver(
+            |input: &str| parse(input).clone().into_iter().flatten().collect(),
+            part1,
+        ),
+        PartSolver(parse, part2),
+    )
 }

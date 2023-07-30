@@ -1,3 +1,5 @@
+use crate::{PartSolver, ProblemSolver};
+
 #[derive(Clone, Copy)]
 enum RoundResult {
     Loss = 0,
@@ -110,9 +112,9 @@ fn play_game(game: &Vec<(Shape, impl ComputeRoundPoints)>) -> i32 {
         .sum()
 }
 
-pub(crate) fn solution(input: &str) -> (i32, i32) {
-    let part1: Vec<(Shape, Shape)> = parse(input);
-    let part2: Vec<(Shape, RoundResult)> = parse(input);
-
-    (play_game(&part1), play_game(&part2))
+pub(crate) fn solution() -> ProblemSolver {
+    ProblemSolver::new(
+        PartSolver(parse::<Shape>, play_game),
+        PartSolver(parse::<RoundResult>, play_game),
+    )
 }

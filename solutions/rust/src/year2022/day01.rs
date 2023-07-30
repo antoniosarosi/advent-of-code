@@ -1,5 +1,7 @@
 use std::num::ParseIntError;
 
+use crate::{PartSolver, ProblemSolver};
+
 fn parse_total_calories(input: &str) -> Vec<i32> {
     let calories: Result<Vec<i32>, ParseIntError> = input
         .trim()
@@ -39,8 +41,9 @@ fn part2(calories: &Vec<i32>) -> i32 {
     top_three.iter().sum()
 }
 
-pub(crate) fn solution(input: &str) -> (i32, i32) {
-    let calories = parse_total_calories(input);
-
-    (part1(&calories), part2(&calories))
+pub(crate) fn solution() -> ProblemSolver {
+    ProblemSolver::new(
+        PartSolver(parse_total_calories, part1),
+        PartSolver(parse_total_calories, part2),
+    )
 }

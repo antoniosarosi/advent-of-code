@@ -1,5 +1,7 @@
 use std::ops::RangeInclusive;
 
+use crate::{PartSolver, ProblemSolver};
+
 type Pair = (RangeInclusive<u32>, RangeInclusive<u32>);
 
 fn parse_range(input: &str) -> RangeInclusive<u32> {
@@ -20,8 +22,8 @@ fn parse(input: &str) -> Vec<Pair> {
     assignments.collect()
 }
 
-fn count_pairs(assignments: &Vec<Pair>, predicate: impl FnMut(&&Pair) -> bool) -> usize {
-    assignments.iter().filter(predicate).count()
+fn count_pairs(assignments: &Vec<Pair>, predicate: impl FnMut(&&Pair) -> bool) -> i32 {
+    assignments.iter().filter(predicate).count() as i32
 }
 
 // Part 1
@@ -35,7 +37,7 @@ impl<T: Ord> FullyContains for RangeInclusive<T> {
     }
 }
 
-fn part1(assignments: &Vec<Pair>) -> usize {
+fn part1(assignments: &Vec<Pair>) -> i32 {
     count_pairs(assignments, |(first_elf, second_elf)| {
         first_elf.fully_contains(second_elf) || second_elf.fully_contains(first_elf)
     })
@@ -52,13 +54,12 @@ impl<T: Ord> Overlaps for RangeInclusive<T> {
     }
 }
 
-fn part2(assignments: &Vec<Pair>) -> usize {
+fn part2(assignments: &Vec<Pair>) -> i32 {
     count_pairs(assignments, |(first_elf, second_elf)| {
         first_elf.overlaps(second_elf) || second_elf.overlaps(first_elf)
     })
 }
 
-pub(crate) fn solution(input: &str) -> (i32, i32) {
-    let assignments = parse(input);
-    (part1(&assignments) as i32, part2(&assignments) as i32)
+pub(crate) fn solution() -> ProblemSolver {
+    ProblemSolver::new(PartSolver(parse, part1), PartSolver(parse, part2))
 }
