@@ -77,10 +77,9 @@ fn part2(stacks: &mut Vec<Vec<char>>, instructions: &Vec<Move>) -> Vec<char> {
         for _ in 0..instruction.amount {
             queue.push(stacks[instruction.from].pop().unwrap());
         }
-        for marked_crate in queue.iter().rev() {
-            stacks[instruction.to].push(*marked_crate);
+        while let Some(marked_crate) = queue.pop() {
+            stacks[instruction.to].push(marked_crate);
         }
-        queue.clear();
     }
 
     top_crates(stacks)
