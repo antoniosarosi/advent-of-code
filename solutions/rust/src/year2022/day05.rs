@@ -36,11 +36,7 @@ fn parse(input: &str) -> (Vec<Vec<char>>, Vec<Move>) {
 
     let mut iter_stacks = initial_stacks.lines().rev();
     let number_of_stacks = iter_stacks.next().unwrap().split_whitespace().count();
-
-    let mut stacks = Vec::with_capacity(number_of_stacks);
-    for _ in 0..number_of_stacks {
-        stacks.push(Vec::new());
-    }
+    let mut stacks = vec![Vec::new(); number_of_stacks];
 
     iter_stacks.map(str::chars).for_each(|mut level| {
         let mut current_stack = 0;
