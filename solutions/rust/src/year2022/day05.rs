@@ -2,7 +2,7 @@ use std::str::FromStr;
 
 #[derive(Debug)]
 struct Move {
-    ammount: usize,
+    amount: usize,
     from: usize,
     to: usize,
 }
@@ -18,7 +18,7 @@ impl FromStr for Move {
         let [_, to] = parts.next_chunk().unwrap();
 
         Ok(Move {
-            ammount: amount.parse().unwrap(),
+            amount: amount.parse().unwrap(),
             from: from.parse::<usize>().unwrap() - 1,
             to: to.parse::<usize>().unwrap() - 1,
         })
@@ -42,16 +42,16 @@ fn parse(input: &str) -> (Vec<Vec<char>>, Vec<Move>) {
         stacks.push(Vec::new());
     }
 
-    for mut row in iter_stacks.map(|row| row.chars()) {
+    iter_stacks.map(str::chars).for_each(|mut level| {
         let mut current_stack = 0;
-        while let Ok([bracket, marked_crate, _]) = row.next_chunk::<3>() {
+        while let Ok([bracket, marked_crate, _]) = level.next_chunk::<3>() {
             if bracket == '[' {
                 stacks[current_stack].push(marked_crate);
             }
-            row.next();
+            level.next();
             current_stack += 1;
         }
-    }
+    });
 
     (stacks, rearrangements)
 }
@@ -62,7 +62,7 @@ fn top_crates(stacks: &Vec<Vec<char>>) -> Vec<char> {
 
 fn part1(stacks: &mut Vec<Vec<char>>, instructions: &Vec<Move>) -> Vec<char> {
     for instruction in instructions {
-        for _ in 0..instruction.ammount {
+        for _ in 0..instruction.amount {
             let marked_crate = stacks[instruction.from].pop().unwrap();
             stacks[instruction.to].push(marked_crate);
         }
@@ -74,7 +74,7 @@ fn part1(stacks: &mut Vec<Vec<char>>, instructions: &Vec<Move>) -> Vec<char> {
 fn part2(stacks: &mut Vec<Vec<char>>, instructions: &Vec<Move>) -> Vec<char> {
     let mut queue = Vec::new();
     for instruction in instructions {
-        for _ in 0..instruction.ammount {
+        for _ in 0..instruction.amount {
             queue.push(stacks[instruction.from].pop().unwrap());
         }
         for marked_crate in queue.iter().rev() {
