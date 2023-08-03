@@ -1,7 +1,7 @@
 const std = @import("std");
 const solutions = @import("solutions.zig");
 
-const MAX_OUTPUT_SIZE = 256;
+const MAX_INPUT_BYTES = 1 << 30;
 
 fn fail(comptime format: []const u8, args: anytype) noreturn {
     var stderr = std.io.bufferedWriter(std.io.getStdErr().writer());
@@ -18,9 +18,7 @@ fn readInputFileAlloc(relative_path: [:0]const u8, allocator: std.mem.Allocator)
     const file = try std.fs.openFileAbsolute(absolute_path, .{});
     defer file.close();
 
-    const max_bytes = 1024 * 1024 * 1024;
-
-    return file.readToEndAlloc(allocator, max_bytes);
+    return file.readToEndAlloc(allocator, MAX_INPUT_BYTES);
 }
 
 pub fn main() !void {
@@ -54,17 +52,17 @@ pub fn main() !void {
         input_file = &buf;
     }
 
-    var sols = solutions.collectSolutions(allocator);
-    defer sols.deinit();
+    var solutions_map = try solutions.collectSolutions(allocator);
+    defer solutions_map.deinit();
 
-    const key = try std.fmt.allocPrint(allocator, "{}/{d:0>2}", .{year, day});
+    const key = try std.fmt.allocPrint(allocator, "{}/{d:0>2}", .{ year, day });
     defer allocator.free(key);
 
-    if (!sols.contains(key)) {
-        fail("Solution for year {} day {} is not implemented or registered", .{year, day});
+    if (!solutions_map.contains(key)) {
+        fail("Solution for year {} day {} is not implemented or registered", .{ year, day });
     }
 
-    const solution = sols.get(key).?;
+    const solution = solutions_map.get(key).?;
 
     const input = readInputFileAlloc(input_file, allocator) catch |err| {
         fail("Can't read input file '{s}': {}", .{ input_file, err });
@@ -77,5 +75,5 @@ pub fn main() !void {
         allocator.free(output[1]);
     }
 
-    std.debug.print("{s}\n{s}", .{output[0], output[1]});
+    std.debug.print("{s}\n{s}", .{ output[0], output[1] });
 }
