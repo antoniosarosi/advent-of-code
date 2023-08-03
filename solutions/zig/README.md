@@ -10,7 +10,7 @@ zig build
 Run it from the project root (because [`./inputs/`](./../../inputs/) is relative):
 
 ```bash
-`cd ../../
+cd ../../
 ./solutions/zig/zig-out/bin/zig 2022 1
 ```
 
