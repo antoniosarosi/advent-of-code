@@ -4,9 +4,8 @@ const solutions = @import("solutions.zig");
 const MAX_INPUT_BYTES = 1 << 30;
 
 fn fail(comptime format: []const u8, args: anytype) noreturn {
-    var stderr = std.io.bufferedWriter(std.io.getStdErr().writer());
-    stderr.writer().print(format, args) catch {};
-    stderr.flush() catch {};
+    var stderr = std.io.getStdErr().writer();
+    stderr.print(format, args) catch {};
 
     std.process.exit(1);
 }
@@ -75,5 +74,6 @@ pub fn main() !void {
         allocator.free(output[1]);
     }
 
-    std.debug.print("{s}\n{s}", .{ output[0], output[1] });
+    var stdout = std.io.getStdOut().writer();
+    try stdout.print("{s}\n{s}", .{ output[0], output[1] });
 }
