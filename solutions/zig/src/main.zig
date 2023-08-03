@@ -1,4 +1,7 @@
 const std = @import("std");
+const solutions = @import("solutions.zig");
+
+const MAX_OUTPUT_SIZE = 256;
 
 fn fail(comptime format: []const u8, args: anytype) noreturn {
     var stderr = std.io.bufferedWriter(std.io.getStdErr().writer());
@@ -51,10 +54,28 @@ pub fn main() !void {
         input_file = &buf;
     }
 
+    var sols = solutions.collectSolutions(allocator);
+    defer sols.deinit();
+
+    const key = try std.fmt.allocPrint(allocator, "{}/{d:0>2}", .{year, day});
+    defer allocator.free(key);
+
+    if (!sols.contains(key)) {
+        fail("Solution for year {} day {} is not implemented or registered", .{year, day});
+    }
+
+    const solution = sols.get(key).?;
+
     const input = readInputFileAlloc(input_file, allocator) catch |err| {
         fail("Can't read input file '{s}': {}", .{ input_file, err });
     };
     defer allocator.free(input);
 
-    std.debug.print("{s}", .{input});
+    const output = try solution(input, allocator);
+    defer {
+        allocator.free(output[0]);
+        allocator.free(output[1]);
+    }
+
+    std.debug.print("{s}\n{s}", .{output[0], output[1]});
 }
