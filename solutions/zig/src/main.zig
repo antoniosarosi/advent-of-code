@@ -51,17 +51,14 @@ pub fn main() !void {
         input_file = &buf;
     }
 
-    var solutions_map = try solutions.collectSolutions(allocator);
-    defer solutions_map.deinit();
-
     const key = try std.fmt.allocPrint(allocator, "{}/{d:0>2}", .{ year, day });
     defer allocator.free(key);
 
-    if (!solutions_map.contains(key)) {
+    if (!solutions.map.has(key)) {
         fail("Solution for year {} day {} is not implemented or registered", .{ year, day });
     }
 
-    const solution = solutions_map.get(key).?;
+    const solution = solutions.map.get(key).?;
 
     const input = readInputFileAlloc(input_file, allocator) catch |err| {
         fail("Can't read input file '{s}': {}", .{ input_file, err });
