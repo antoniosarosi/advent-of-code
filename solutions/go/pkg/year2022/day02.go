@@ -63,15 +63,15 @@ func parsePlayerResult(encoded string) int {
 }
 
 func calculateRoundResult(player, oponent int) int {
-	if (player == Rock && oponent == Scissors) ||
-		(player == Paper && oponent == Rock) ||
-		(player == Scissors && oponent == Paper) {
+	if player == Rock && oponent == Scissors ||
+		player == Paper && oponent == Rock ||
+		player == Scissors && oponent == Paper {
 		return Win
 	}
 
-	if (player == Scissors && oponent == Rock) ||
-		(player == Paper && oponent == Scissors) ||
-		(player == Rock && oponent == Paper) {
+	if player == Scissors && oponent == Rock ||
+		player == Paper && oponent == Scissors ||
+		player == Rock && oponent == Paper {
 		return Loss
 	}
 
@@ -79,15 +79,15 @@ func calculateRoundResult(player, oponent int) int {
 }
 
 func getNecessaryShapeForResult(result, oponent int) int {
-	if (result == Loss && oponent == Paper) ||
-		(result == Draw && oponent == Rock) ||
-		(result == Win && oponent == Scissors) {
+	if result == Loss && oponent == Paper ||
+		result == Draw && oponent == Rock ||
+		result == Win && oponent == Scissors {
 		return Rock
 	}
 
-	if (result == Loss && oponent == Scissors) ||
-		(result == Draw && oponent == Paper) ||
-		(result == Win && oponent == Rock) {
+	if result == Loss && oponent == Scissors ||
+		result == Draw && oponent == Paper ||
+		result == Win && oponent == Rock {
 		return Paper
 	}
 
