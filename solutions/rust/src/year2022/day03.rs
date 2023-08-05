@@ -3,7 +3,7 @@ use std::collections::HashSet;
 const GROUP_SIZE: usize = 3;
 
 type Item = char;
-type Rucksack = (Vec<Item>, Vec<Item>);
+type Rucksack = Vec<Item>;
 type Group = [Rucksack; GROUP_SIZE];
 
 fn parse(input: &str) -> Vec<Group> {
@@ -11,14 +11,7 @@ fn parse(input: &str) -> Vec<Group> {
         .trim()
         .lines()
         .array_chunks::<GROUP_SIZE>()
-        .map(|chunk| {
-            chunk.map(|line| {
-                let half = line.len() / 2;
-                let first_compartment = line[..half].chars();
-                let second_compartment = line[half..].chars();
-                (first_compartment.collect(), second_compartment.collect())
-            })
-        })
+        .map(|chunk| chunk.map(|line| line.chars().collect()))
         .collect()
 }
 
@@ -27,16 +20,11 @@ fn priority(item: Item) -> usize {
     index.expect(&format!("invalid item: {item}")) + 1
 }
 
-fn ruckcask_into_hash_set(ruckcask: &Rucksack) -> HashSet<Item> {
-    HashSet::from_iter(ruckcask.0.iter().chain(ruckcask.1.iter()).copied())
-}
-
 fn part1(rucksacks: &Vec<Rucksack>) -> usize {
     let priorities = rucksacks.iter().map(|rucksack| {
-        let first_compartment = HashSet::<Item>::from_iter(rucksack.0.iter().copied());
-
-        let duplicate = rucksack
-            .1
+        let half = rucksack.len() / 2;
+        let first_compartment = HashSet::<Item>::from_iter(rucksack[..half].iter().copied());
+        let duplicate = rucksack[half..]
             .iter()
             .find(|item| first_compartment.contains(item))
             .expect("no duplicate item found");
@@ -49,11 +37,11 @@ fn part1(rucksacks: &Vec<Rucksack>) -> usize {
 
 fn part2(groups: &Vec<Group>) -> usize {
     let priorities = groups.iter().map(|group| {
-        let mut candidates = ruckcask_into_hash_set(&group[0]);
+        let mut candidates = HashSet::<Item>::from_iter(group[0].iter().copied());
 
         group[1..]
             .iter()
-            .map(ruckcask_into_hash_set)
+            .map(|group| HashSet::<Item>::from_iter(group.iter().copied()))
             .for_each(|rucksack| candidates.retain(|item| rucksack.contains(item)));
 
         priority(*candidates.iter().next().expect("no repeated item found"))
