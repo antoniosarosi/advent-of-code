@@ -24,9 +24,9 @@ fn priority_linear(item: Item) -> usize {
 
 /// Faster O(1)
 fn priority(item: Item) -> usize {
-    let lower_case_shift = 'a' as usize - 1;
-    let upper_case_shift = 'A' as usize - 2;
-    let letter_count = 'z' as usize - 'a' as usize;
+    let lower_case_shift = (b'a' - 1) as usize;
+    let upper_case_shift = (b'A' - 2) as usize;
+    let letter_count = (b'z' - b'a') as usize;
 
     match item {
         'a'..='z' => item as usize - lower_case_shift,
