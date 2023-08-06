@@ -15,9 +15,24 @@ fn parse(input: &str) -> Vec<Group> {
         .collect()
 }
 
-fn priority(item: Item) -> usize {
+/// O(1) but "slow"
+#[allow(dead_code)]
+fn priority_linear(item: Item) -> usize {
     let index = ('a'..='z').chain('A'..='Z').position(|c| c == item);
     index.expect(&format!("invalid item: {item}")) + 1
+}
+
+/// Faster O(1)
+fn priority(item: Item) -> usize {
+    let lower_case_shift = 'a' as usize - 1;
+    let upper_case_shift = 'A' as usize - 2;
+    let letter_count = 'z' as usize - 'a' as usize;
+
+    match item {
+        'a'..='z' => item as usize - lower_case_shift,
+        'A'..='Z' => item as usize - upper_case_shift + letter_count,
+        _ => panic!("invalid item: {item}"),
+    }
 }
 
 fn part1(rucksacks: &Vec<Rucksack>) -> usize {
