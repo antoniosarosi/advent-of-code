@@ -40,7 +40,7 @@ fn priority(item: u8) usize {
 ///
 /// Time: O(n * (m/2 + (m/2)^2)) ≈ O(n * m^2)
 /// Mem:  O(n * m)
-fn part1_linear_scan(rucksacks: *const std.ArrayList(std.ArrayList(u8))) usize {
+fn part1LinearScan(rucksacks: *const std.ArrayList(std.ArrayList(u8))) usize {
     var priorities_sum: usize = 0;
 
     for (rucksacks.items) |rucksack| {
@@ -63,7 +63,7 @@ fn part1_linear_scan(rucksacks: *const std.ArrayList(std.ArrayList(u8))) usize {
 ///
 /// Time: O(n * m)
 /// Mem:  O(n * m + max(m/2)) ≈ O(n * m)
-fn part1_hash_set(rucksacks: *const std.ArrayList(std.ArrayList(u8))) !usize {
+fn part1HashSet(rucksacks: *const std.ArrayList(std.ArrayList(u8))) !usize {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     const allocator = gpa.allocator();
 
@@ -95,7 +95,7 @@ fn part1_hash_set(rucksacks: *const std.ArrayList(std.ArrayList(u8))) !usize {
 ///
 /// Time: O(n * g * m^2)
 /// Mem:  O(n * g * m + max(m * g)) ≈ O(n * g * m)
-fn part2_linear_scan(groups: *const std.ArrayList(Group)) !usize {
+fn part2LinearScan(groups: *const std.ArrayList(Group)) !usize {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     const allocator = gpa.allocator();
 
@@ -152,7 +152,7 @@ fn part2_linear_scan(groups: *const std.ArrayList(Group)) !usize {
 ///
 /// Time: O(n * g * 3m) ≈ O(n * g * m)
 /// Mem:  O(n * g * m + 2*max(m)) ≈ O(n * g * m)
-fn part2_hash_set(groups: *const std.ArrayList(Group)) !usize {
+fn part2HashSet(groups: *const std.ArrayList(Group)) !usize {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     const allocator = gpa.allocator();
 
@@ -222,7 +222,7 @@ pub fn solution(input: []const u8, allocator: std.mem.Allocator) !struct { []u8,
     defer rucksacks_only.deinit();
 
     return .{
-        try std.fmt.allocPrint(allocator, "{}", .{try part1_hash_set(&rucksacks_only)}),
-        try std.fmt.allocPrint(allocator, "{}", .{try part2_hash_set(&groups)}),
+        try std.fmt.allocPrint(allocator, "{}", .{try part1HashSet(&rucksacks_only)}),
+        try std.fmt.allocPrint(allocator, "{}", .{try part2HashSet(&groups)}),
     };
 }
