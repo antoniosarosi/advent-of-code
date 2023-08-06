@@ -111,7 +111,7 @@ fn part2LinearScan(groups: *const std.ArrayList(Group)) !usize {
             }
         }
 
-        if (buf_size > candidates.len) {
+        if (buf_size * GROUP_SIZE > candidates.len) {
             candidates = try allocator.realloc(candidates, buf_size * GROUP_SIZE);
         }
         @memcpy(candidates[0..group[0].items.len], group[0].items);
