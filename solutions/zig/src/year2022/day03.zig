@@ -22,12 +22,15 @@ fn parse(input: []const u8, allocator: std.mem.Allocator) !std.ArrayList(Group) 
 }
 
 fn priority(item: u8) usize {
-    comptime var half = 'z' + 1 - 'a';
-    comptime var sequence: [half * 2]u8 = undefined;
-    inline for ('a'..'z' + 1, 0..) |c, i| sequence[i] = c;
-    inline for ('A'..'Z' + 1, half..) |c, i| sequence[i] = c;
+    comptime var lower_case_shift = 'a' - 1;
+    comptime var upper_case_shift = 'A' - 2;
+    comptime var letter_count = 'z' - 'a';
 
-    return std.mem.indexOfScalar(u8, &sequence, item).? + 1;
+    return switch (item) {
+        'a'...'z' => item - lower_case_shift,
+        'A'...'Z' => item - upper_case_shift + letter_count,
+        else => unreachable,
+    };
 }
 
 fn part1(rucksacks: *const std.ArrayList(std.ArrayList(u8))) usize {
