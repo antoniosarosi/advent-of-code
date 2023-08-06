@@ -52,7 +52,7 @@ fn part1(rucksacks: *const std.ArrayList(std.ArrayList(u8))) usize {
 
 fn part2(groups: *const std.ArrayList(Group)) !usize {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    var allocator = gpa.allocator();
+    const allocator = gpa.allocator();
 
     var priorities_sum: usize = 0;
     for (groups.items) |group| {
@@ -68,8 +68,8 @@ fn part2(groups: *const std.ArrayList(Group)) !usize {
         @memset(candidates[group[0].items.len..], 0);
 
         for (group[1..], 1..) |rucksack, i| {
-            var prev = (i - 1) * buf_size;
-            var current = i * buf_size;
+            const prev = (i - 1) * buf_size;
+            const current = i * buf_size;
 
             var j: usize = 0;
             for (rucksack.items) |item| {
