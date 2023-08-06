@@ -65,17 +65,20 @@ fn part2(groups: *const std.ArrayList(Group)) !usize {
 
         var candidates = try allocator.alloc(u8, buf_size * GROUP_SIZE);
         @memcpy(candidates[0..group[0].items.len], group[0].items);
-        @memset(candidates[buf_size..], 0);
+        @memset(candidates[group[0].items.len..], 0);
 
-        for (group[1..], 1..GROUP_SIZE) |rucksack, i| {
+        for (group[1..], 1..) |rucksack, i| {
             var prev = (i - 1) * buf_size;
             var current = i * buf_size;
 
             var j: usize = 0;
             for (rucksack.items) |item| {
                 for (candidates[prev..current]) |candidate| search: {
+                    if (candidate == 0) {
+                        break :search;
+                    }
                     if (item == candidate) {
-                        while (candidates[current + j] != 0) {
+                        while (j < buf_size and candidates[current + j] != 0) {
                             if (candidates[current + j] == item) {
                                 break :search;
                             } else {
@@ -83,8 +86,6 @@ fn part2(groups: *const std.ArrayList(Group)) !usize {
                             }
                         }
                         candidates[current + j] = item;
-                    } else if (candidate == 0) {
-                        break :search;
                     }
                 }
             }
