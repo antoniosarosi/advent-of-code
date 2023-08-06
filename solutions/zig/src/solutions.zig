@@ -6,4 +6,5 @@ const Solution = *const fn (input: []const u8, allocator: std.mem.Allocator) any
 pub const map = std.ComptimeStringMap(Solution, .{
     .{ "2022/01", year2022.day01.solution },
     .{ "2022/02", year2022.day02.solution },
+    .{ "2022/03", year2022.day03.solution },
 });

@@ -132,7 +132,10 @@ fn playGame(comptime T: type, game: *std.ArrayList(Round(T))) usize {
 
 pub fn solution(input: []const u8, allocator: std.mem.Allocator) !struct { []u8, []u8 } {
     var part1 = try parse(Shape, input, allocator);
+    defer part1.deinit();
+
     var part2 = try parse(RoundResult, input, allocator);
+    defer part2.deinit();
 
     return .{
         try std.fmt.allocPrint(allocator, "{}", .{playGame(Shape, &part1)}),
