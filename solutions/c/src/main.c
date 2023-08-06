@@ -9,7 +9,6 @@
 #endif
 
 #define INPUT_FILE_PATH_MAX_SIZE 256
-#define MAX_OUTPUT_SIZE 256
 
 void fail(const char *format, ...) {
     va_list args;

@@ -1,7 +1,9 @@
 #include "./year2022/day01.c"
 #include "./year2022/day02.c"
 
-typedef void (*Fn)(char*, char*[265]);
+#define MAX_OUTPUT_SIZE 256
+
+typedef void (*Fn)(char*, char*[MAX_OUTPUT_SIZE]);
 
 struct Solution {
     int year;
