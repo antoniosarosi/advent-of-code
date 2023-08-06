@@ -64,13 +64,12 @@ fn part2(groups: *const std.ArrayList(Group)) !usize {
         }
 
         var candidates = try allocator.alloc(u8, buf_size * GROUP_SIZE);
-        std.mem.copyForwards(u8, candidates[0..buf_size], group[0].items);
+        @memcpy(candidates[0..group[0].items.len], group[0].items);
+        @memset(candidates[buf_size..], 0);
 
         for (group[1..], 1..GROUP_SIZE) |rucksack, i| {
             var prev = (i - 1) * buf_size;
             var current = i * buf_size;
-            var next = current + buf_size;
-            @memset(candidates[current..next], 0);
 
             var j: usize = 0;
             for (rucksack.items) |item| {
