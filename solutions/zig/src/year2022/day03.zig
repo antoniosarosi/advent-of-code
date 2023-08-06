@@ -21,10 +21,13 @@ fn parse(input: []const u8, allocator: std.mem.Allocator) !std.ArrayList(Group) 
     return groups;
 }
 
+/// Constant time, one branch instruction + addition.
+///
+/// O(1)
 fn priority(item: u8) usize {
-    comptime var lower_case_shift = 'a' - 1;
-    comptime var upper_case_shift = 'A' - 2;
-    comptime var letter_count = 'z' - 'a';
+    const lower_case_shift = 'a' - 1;
+    const upper_case_shift = 'A' - 2;
+    const letter_count = 'z' - 'a';
 
     return switch (item) {
         'a'...'z' => item - lower_case_shift,
@@ -33,7 +36,11 @@ fn priority(item: u8) usize {
     };
 }
 
-fn part1(rucksacks: *const std.ArrayList(std.ArrayList(u8))) usize {
+/// No hash sets, no additional allocations.
+///
+/// Time: O(n * (m/2 + (m/2)^2)) ≈ O(n * m^2)
+/// Mem:  O(n * m)
+fn part1_linear_scan(rucksacks: *const std.ArrayList(std.ArrayList(u8))) usize {
     var priorities_sum: usize = 0;
 
     for (rucksacks.items) |rucksack| {
@@ -50,9 +57,48 @@ fn part1(rucksacks: *const std.ArrayList(std.ArrayList(u8))) usize {
     return priorities_sum;
 }
 
+/// Uses a hash set instead of searching linearly. One initial allocation is
+/// performed to ensure the hash set can contain at least the total number of
+/// elements in the first rucksack. Further reallocations might be necessary.
+///
+/// Time: O(n * m)
+/// Mem:  O(n * m + max(m/2)) ≈ O(n * m)
+fn part1(rucksacks: *const std.ArrayList(std.ArrayList(u8))) !usize {
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    const allocator = gpa.allocator();
+
+    var priorities_sum: usize = 0;
+
+    var first_compartment = std.AutoHashMap(u8, void).init(allocator);
+    try first_compartment.ensureTotalCapacity(@intCast(rucksacks.items[0].items.len));
+    defer first_compartment.deinit();
+
+    for (rucksacks.items) |rucksack| {
+        defer first_compartment.clearRetainingCapacity();
+        const half = rucksack.items.len / 2;
+        for (rucksack.items[0..half]) |item| {
+            try first_compartment.put(item, {});
+        }
+        for (rucksack.items[half..]) |item| {
+            if (first_compartment.contains(item)) {
+                priorities_sum += priority(item);
+                break;
+            }
+        }
+    }
+
+    return priorities_sum;
+}
+
+/// One allocation per group, duplicates are found linearly.
+///
+/// Time: O(n * g * m)
 fn part2(groups: *const std.ArrayList(Group)) !usize {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     const allocator = gpa.allocator();
+
+    var candidates = try allocator.alloc(u8, 256 * GROUP_SIZE);
+    defer allocator.free(candidates);
 
     var priorities_sum: usize = 0;
     for (groups.items) |group| {
@@ -63,7 +109,7 @@ fn part2(groups: *const std.ArrayList(Group)) !usize {
             }
         }
 
-        var candidates = try allocator.alloc(u8, buf_size * GROUP_SIZE);
+        candidates = try allocator.realloc(candidates, buf_size * GROUP_SIZE);
         @memcpy(candidates[0..group[0].items.len], group[0].items);
         @memset(candidates[group[0].items.len..], 0);
 
@@ -92,11 +138,14 @@ fn part2(groups: *const std.ArrayList(Group)) !usize {
         }
 
         priorities_sum += priority(candidates[buf_size * (GROUP_SIZE - 1)]);
-        allocator.free(candidates);
     }
 
     return priorities_sum;
 }
+
+// fn part2(groups: *const std.ArrayList(Group)) !usize {
+
+// }
 
 fn rucksacksWithoutGroups(groups: *const std.ArrayList(Group), allocator: std.mem.Allocator) !std.ArrayList(std.ArrayList(u8)) {
     var rucksacks = std.ArrayList(std.ArrayList(u8)).init(allocator);
@@ -125,7 +174,7 @@ pub fn solution(input: []const u8, allocator: std.mem.Allocator) !struct { []u8,
     defer rucksacks_only.deinit();
 
     return .{
-        try std.fmt.allocPrint(allocator, "{}", .{part1(&rucksacks_only)}),
+        try std.fmt.allocPrint(allocator, "{}", .{try part1(&rucksacks_only)}),
         try std.fmt.allocPrint(allocator, "{}", .{try part2(&groups)}),
     };
 }
