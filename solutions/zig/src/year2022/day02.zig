@@ -121,7 +121,7 @@ fn parse(comptime T: type, input: []const u8, allocator: std.mem.Allocator) !std
     return game;
 }
 
-fn playGame(comptime T: type, game: *std.ArrayList(Round(T))) usize {
+fn playGame(comptime T: type, game: *const std.ArrayList(Round(T))) usize {
     var sum: usize = 0;
     for (game.items) |round| {
         sum += round.calculatePoints();
@@ -131,10 +131,10 @@ fn playGame(comptime T: type, game: *std.ArrayList(Round(T))) usize {
 }
 
 pub fn solution(input: []const u8, allocator: std.mem.Allocator) !struct { []u8, []u8 } {
-    var part1 = try parse(Shape, input, allocator);
+    const part1 = try parse(Shape, input, allocator);
     defer part1.deinit();
 
-    var part2 = try parse(RoundResult, input, allocator);
+    const part2 = try parse(RoundResult, input, allocator);
     defer part2.deinit();
 
     return .{

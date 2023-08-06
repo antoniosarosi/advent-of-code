@@ -30,7 +30,7 @@ fn priority(item: u8) usize {
     return std.mem.indexOfScalar(u8, &sequence, item).? + 1;
 }
 
-fn part1(rucksacks: *std.ArrayList(std.ArrayList(u8))) usize {
+fn part1(rucksacks: *const std.ArrayList(std.ArrayList(u8))) usize {
     var priorities_sum: usize = 0;
 
     for (rucksacks.items) |rucksack| {
@@ -47,7 +47,7 @@ fn part1(rucksacks: *std.ArrayList(std.ArrayList(u8))) usize {
     return priorities_sum;
 }
 
-fn part2(groups: *std.ArrayList(Group)) !usize {
+fn part2(groups: *const std.ArrayList(Group)) !usize {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     var allocator = gpa.allocator();
 
@@ -95,7 +95,7 @@ fn part2(groups: *std.ArrayList(Group)) !usize {
     return priorities_sum;
 }
 
-fn rucksacksWithoutGroups(groups: *std.ArrayList(Group), allocator: std.mem.Allocator) !std.ArrayList(std.ArrayList(u8)) {
+fn rucksacksWithoutGroups(groups: *const std.ArrayList(Group), allocator: std.mem.Allocator) !std.ArrayList(std.ArrayList(u8)) {
     var rucksacks = std.ArrayList(std.ArrayList(u8)).init(allocator);
     for (groups.items) |group| {
         for (group) |rucksack| {
@@ -107,7 +107,7 @@ fn rucksacksWithoutGroups(groups: *std.ArrayList(Group), allocator: std.mem.Allo
 }
 
 pub fn solution(input: []const u8, allocator: std.mem.Allocator) !struct { []u8, []u8 } {
-    var groups = try parse(input, allocator);
+    const groups = try parse(input, allocator);
 
     defer {
         for (groups.items) |group| {
@@ -118,7 +118,7 @@ pub fn solution(input: []const u8, allocator: std.mem.Allocator) !struct { []u8,
         groups.deinit();
     }
 
-    var rucksacks_only = try rucksacksWithoutGroups(&groups, allocator);
+    const rucksacks_only = try rucksacksWithoutGroups(&groups, allocator);
     defer rucksacks_only.deinit();
 
     return .{

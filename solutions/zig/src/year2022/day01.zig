@@ -16,11 +16,11 @@ fn parseTotalCalories(input: []const u8, allocator: std.mem.Allocator) !std.Arra
     return total_calories;
 }
 
-fn part1(calories: *std.ArrayList(u32)) u32 {
+fn part1(calories: *const std.ArrayList(u32)) u32 {
     return std.mem.max(u32, calories.items);
 }
 
-fn part2(calories: *std.ArrayList(u32)) u32 {
+fn part2(calories: *const std.ArrayList(u32)) u32 {
     var top_three = [3]u32{ 0, 0, 0 };
     for (calories.items) |cal| {
         inline for (0..top_three.len) |i| {
@@ -35,11 +35,11 @@ fn part2(calories: *std.ArrayList(u32)) u32 {
         }
     }
 
-    return top_three[0] + top_three[1] + top_three[2];
+    return @reduce(.Add, @as(@Vector(3, u32), top_three));
 }
 
 pub fn solution(input: []const u8, allocator: std.mem.Allocator) !struct { []u8, []u8 } {
-    var calories = try parseTotalCalories(input, allocator);
+    const calories = try parseTotalCalories(input, allocator);
     defer calories.deinit();
 
     return .{
