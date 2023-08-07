@@ -4,11 +4,11 @@
 void year2022_day01_solution(char *input, char **output) {
     int top_three[] = {0, 0, 0};
 
-    while (input[0] != '\0') {
+    while (*input != '\0') {
         int elf = 0;
-        while (input[0] != '\0' && input[0] != '\n') {
+        while (*input != '\0' && *input != '\n') {
             elf += strtol(input, &input, 10);
-            if (input[0] != '\0') {
+            if (*input != '\0') {
                 input++;
             }
         }
@@ -23,7 +23,7 @@ void year2022_day01_solution(char *input, char **output) {
             }
         }
 
-        if (input[0] == '\n') {
+        if (*input == '\n') {
             input++;
         }
     }
