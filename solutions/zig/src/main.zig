@@ -72,5 +72,5 @@ pub fn main() !void {
     }
 
     var stdout = std.io.getStdOut().writer();
-    try stdout.print("{s}\n{s}", .{ output[0], output[1] });
+    try stdout.print("{s}\n{s}\n", .{ output[0], output[1] });
 }
