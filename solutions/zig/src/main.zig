@@ -39,17 +39,16 @@ pub fn main() !void {
         fail("Can't parse day '{s}': {}", .{ args[2], err });
     };
 
-    var input_file: [:0]u8 = undefined;
+    var input_file = blk: {
+        if (args.len == 4) {
+            break :blk args[3];
+        }
 
-    if (args.len == 4) {
-        input_file = args[3];
-    } else {
         var buf = std.mem.zeroes([std.fs.MAX_PATH_BYTES:0]u8);
-        _ = std.fmt.bufPrint(&buf, "./inputs/{}/day{d:0>2}.txt", .{ year, day }) catch |err| {
+        break :blk std.fmt.bufPrintZ(&buf, "./inputs/{}/day{d:0>2}.txt", .{ year, day }) catch |err| {
             fail("Can't format default input file path: {}", .{err});
         };
-        input_file = &buf;
-    }
+    };
 
     const key = try std.fmt.allocPrint(allocator, "{}/{d:0>2}", .{ year, day });
     defer allocator.free(key);
