@@ -32,7 +32,7 @@ fn main() -> Result<(), String> {
         }
     };
 
-    let solutions = rust::collect_solutions();
+    let solutions = aoc::collect_solutions();
 
     let solution = solutions
         .get(format!("{year}/{day:02}").as_str())
