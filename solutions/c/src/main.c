@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
+
 #include "solutions.h"
 
 #ifndef INPUTS_DIR
@@ -16,6 +17,16 @@ void fail(const char *format, ...) {
     exit(1);
 }
 
+void *mem_alloc_or_fail(size_t bytes) {
+    void *ptr = malloc(bytes);
+
+    if (ptr == NULL) {
+        fail("Error: Out of memory\n");
+    }
+
+    return ptr;
+}
+
 char *read_input(char *path) {
     FILE *file = fopen(path, "rb");
     if (file == NULL) {
@@ -26,7 +37,7 @@ char *read_input(char *path) {
     long length = ftell(file);
     rewind(file);
 
-    char *input = malloc(length + 1);
+    char *input = mem_alloc_or_fail(length + 1);
     fread(input, length, 1, file);
     fclose(file);
 
@@ -54,7 +65,7 @@ int main(int argc, char **argv) {
     if (argc == 4) {
         path = argv[3];
     } else {
-        path = malloc(snprintf(NULL, 0, "%s/%d/day%02d.txt", INPUTS_DIR, year, day));
+        path = mem_alloc_or_fail(snprintf(NULL, 0, "%s/%d/day%02d.txt", INPUTS_DIR, year, day));
         sprintf(path, "%s/%d/day%02d.txt", INPUTS_DIR, year, day);
     }
 
