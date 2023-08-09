@@ -45,5 +45,5 @@ func main() {
 
 	part1, part2 := solution(string(input))
 
-	fmt.Printf("%s\n%s", part1, part2)
+	fmt.Printf("%s\n%s\n", part1, part2)
 }

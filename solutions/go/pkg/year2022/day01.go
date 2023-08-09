@@ -1,6 +1,7 @@
 package year2022
 
 import (
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -25,14 +26,7 @@ func parseTotalCalories(input string) []int {
 }
 
 func day1Part1(calories []int) int {
-	max := 0
-	for _, cal := range calories {
-		if cal > max {
-			max = cal
-		}
-	}
-
-	return max
+	return slices.Max(calories)
 }
 
 func day1Part2(calories []int) int {
