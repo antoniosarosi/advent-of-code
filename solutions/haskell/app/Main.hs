@@ -33,7 +33,7 @@ main = do
 
                             let inputFile =
                                     if length args == 3
-                                        then (args !! 2)
+                                        then args !! 2
                                         else printf "../../inputs/%d/day%02d.txt" year day
 
                             case Map.lookup key solutions of
