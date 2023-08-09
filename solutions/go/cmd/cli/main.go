@@ -8,6 +8,8 @@ import (
 	"github.com/antoniosarosi/advent-of-code/solutions/go/pkg/solutions"
 )
 
+var InputsDirectory string = "../../inputs/"
+
 func fail(format string, args ...any) {
 	fmt.Fprintf(os.Stderr, format, args...)
 	os.Exit(1)
@@ -28,7 +30,7 @@ func main() {
 		fail("Cannot parse day: '%s'", os.Args[2])
 	}
 
-	inputFile := fmt.Sprintf("./inputs/%d/day%02d.txt", year, day)
+	inputFile := fmt.Sprintf("%s/%d/day%02d.txt", InputsDirectory, year, day)
 	if len(os.Args) == 4 {
 		inputFile = os.Args[3]
 	}
