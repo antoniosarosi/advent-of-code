@@ -19,20 +19,22 @@ main = do
     if length args < 2 || length args > 3
         then die "Usage: ./executable YEAR DAY [optional/input.txt]"
         else do
-            let year = readMaybe (head args) :: Maybe Int
-            if isNothing year
+            let maybeYear = readMaybe (head args) :: Maybe Int
+            if isNothing maybeYear
                 then die ("Cant parse year: " ++ head args)
                 else do
-                    let day = readMaybe (args !! 1) :: Maybe Int
-                    if isNothing day
+                    let maybeDay = readMaybe (args !! 1) :: Maybe Int
+                    if isNothing maybeDay
                         then die ("Cant parse day: " ++ (args !! 1))
                         else do
-                            let key = show (fromJust year) ++ "/" ++ printf "%02d" (fromJust day)
+                            let year = fromJust maybeYear
+                            let day = fromJust maybeDay
+                            let key = show year ++ "/" ++ printf "%02d" day
 
                             let inputFile =
                                     if length args == 3
                                         then (args !! 2)
-                                        else printf "../../inputs/%d/day%02d.txt" (fromJust year) (fromJust day)
+                                        else printf "../../inputs/%d/day%02d.txt" year day
 
                             case Map.lookup key solutions of
                                 Nothing -> die ("Solution for year " ++ head args ++ " and day " ++ (args !! 1) ++ " not found")
