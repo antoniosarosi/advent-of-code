@@ -36,6 +36,7 @@ library
   build-depends:
       base >=4.7 && <5
     , containers
+    , split
   default-language: Haskell2010
 
 executable aoc-exe
@@ -49,6 +50,7 @@ executable aoc-exe
       aoc
     , base >=4.7 && <5
     , containers
+    , split
   default-language: Haskell2010
 
 test-suite aoc-test
@@ -63,4 +65,5 @@ test-suite aoc-test
       aoc
     , base >=4.7 && <5
     , containers
+    , split
   default-language: Haskell2010
