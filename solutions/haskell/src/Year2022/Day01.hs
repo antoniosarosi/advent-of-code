@@ -5,7 +5,8 @@ import Data.List.Split (splitOn)
 
 parse :: String -> [Int]
 -- parse input = map sum $ map (map read) $ map words $ splitOn "\n\n" input
-parse = map sum . map (map read) . map words . splitOn "\n\n"
+-- parse = map sum . map (map read) . map words . splitOn "\n\n"
+parse = map (sum . map read . words) . splitOn "\n\n"
 
 part1 :: [Int] -> Int
 -- part1 calories = maximum calories
