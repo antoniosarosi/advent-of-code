@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
 
     free(input);
 
-    if (path != argv[3]) {
+    if (argc == 3) {
         free(path);
     }
 
