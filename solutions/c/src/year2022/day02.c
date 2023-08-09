@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 typedef enum {
     ROCK = 1,
     PAPER = 2,

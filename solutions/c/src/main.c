@@ -2,13 +2,11 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
-#include "solutions.c"
+#include "solutions.h"
 
 #ifndef INPUTS_DIR
-#define INPUTS_DIR "./inputs"
+#define INPUTS_DIR "../../inputs"
 #endif
-
-#define INPUT_FILE_PATH_MAX_SIZE 256
 
 void fail(const char *format, ...) {
     va_list args;
@@ -52,10 +50,11 @@ int main(int argc, char **argv) {
         fail("Cannot parse day: '%s'\n", argv[2]);
     }
 
-    char path[INPUT_FILE_PATH_MAX_SIZE];
+    char *path = NULL;
     if (argc == 4) {
-        strncpy(path, argv[3], INPUT_FILE_PATH_MAX_SIZE);
+        path = argv[3];
     } else {
+        path = malloc(snprintf(NULL, 0, "%s/%d/day%02d.txt", INPUTS_DIR, year, day));
         sprintf(path, "%s/%d/day%02d.txt", INPUTS_DIR, year, day);
     }
 
@@ -72,6 +71,10 @@ int main(int argc, char **argv) {
     printf("%s\n%s\n", output[0], output[1]);
 
     free(input);
+
+    if (path != argv[3]) {
+        free(path);
+    }
 
     return 0;
 }

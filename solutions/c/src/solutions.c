@@ -1,15 +1,6 @@
-#include "./year2022/day01.c"
-#include "./year2022/day02.c"
-
-#define MAX_OUTPUT_SIZE 256
-
-typedef void (*Fn)(char*, char*[MAX_OUTPUT_SIZE]);
-
-struct Solution {
-    int year;
-    int day;
-    Fn fn;
-};
+#include <stddef.h>
+#include "solutions.h"
+#include "year2022/year2022.h"
 
 struct Solution solutions[] = {
     {2022, 1, year2022_day01_solution},
