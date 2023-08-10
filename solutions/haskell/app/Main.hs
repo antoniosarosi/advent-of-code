@@ -34,9 +34,9 @@ readCliArgs args = case parseArgs args of
 main :: IO ()
 main = do
     Args year day maybeInputFile <- readCliArgs =<< getArgs
-    let key = printf "%d/%02d" year day
     let inputFile = fromMaybe (printf "../../inputs/%d/day%02d.txt" year day) maybeInputFile
 
+    let key = printf "%d/%02d" year day
     case Map.lookup key solutions of
         Nothing -> die $ printf "Solution for year %d and day %d not found" year day
         Just solution -> do
