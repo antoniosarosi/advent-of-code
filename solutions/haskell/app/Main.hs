@@ -27,9 +27,7 @@ die :: String -> IO a
 die msg = hPutStrLn stderr msg >> exitFailure
 
 readCliArgs :: [String] -> IO Args
-readCliArgs args = case parseArgs args of
-    Left err -> die err
-    Right parsed -> return parsed
+readCliArgs = either die return . parseArgs
 
 main :: IO ()
 main = do
